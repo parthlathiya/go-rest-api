@@ -36,7 +36,10 @@ func dbConn() (db *sql.DB) {
 	dbUser := "test_user"
 	dbPass := "test_password"
 	dbName := "boilerplate"
-	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@/"+dbName)
+	host := "db"
+	port := "3306"
+
+	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+host+":"+port+")/"+dbName)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -49,15 +52,17 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprintf(w, "Something went wrong!!")
 		log.Println("Error while decoding req body", err.Error())
+		return
 	}
 
 	db := dbConn()
 	defer db.Close()
 
-	insertQuery, err := db.Prepare("INSERT INTO myapp_user(email, first_name, last_name) VALUES(?,?,?)")
+	insertQuery, err := db.Prepare("INSERT INTO user(email, first_name, last_name) VALUES(?,?,?)")
 	if err != nil {
 		fmt.Fprintf(w, "Something went wrong!!")
 		log.Println("Error while creating user", err.Error())
+		return
 	}
 	insertQuery.Exec(newUser.Email, newUser.FirstName, newUser.LastName)
 
@@ -70,7 +75,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 
 	db := dbConn()
 	defer db.Close()
-	row := db.QueryRow("SELECT * FROM myapp_user WHERE email=?", email)
+	row := db.QueryRow("SELECT * FROM user WHERE email=?", email)
 
 	var id int
 	newUser := User{}
@@ -78,6 +83,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil && err != sql.ErrNoRows {
 		fmt.Fprintf(w, "Something went wrong!!")
 		log.Println("Error while getting user", err.Error())
+		return
 	}
 
 	json.NewEncoder(w).Encode(newUser)

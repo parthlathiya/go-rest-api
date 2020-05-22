@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    ports:
+      - '3312:3306'
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    environment:
+       MYSQL_DATABASE: 'boilerplate'
+       MYSQL_USER: 'test_user'
+       MYSQL_PASSWORD: 'test_password'
+       MYSQL_ROOT_PASSWORD: 'root'
+  web:
+    build: .
+    command: bash -c '
+      ./scripts/wait-for-it.sh db:3306
+      && go run /go/src/app/myapp/main.go'
+    volumes:
+      - .:/go/src/app
+    ports:
+      - '8092:8092'
+    depends_on:
+      - db

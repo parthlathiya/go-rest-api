@@ -11,7 +11,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// User 3 attributes email, first_name and last_name
 type User struct {
 	Email     string `json:"email"`
 	FirstName string `json:"first_name"`

@@ -1,6 +1,6 @@
 # REST APIs in Go
 
-This repo contains sample go application which has 2 APIs. one to create an user and another to get user.
+This repo contains sample Go application which has 2 APIs. one to create an user and another to get user. I have used gorill mux for request router.
 For easy setup, I have added docker-compose config.
 
 ## Getting Started

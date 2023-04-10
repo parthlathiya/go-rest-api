@@ -38,7 +38,7 @@ func dbConn() (db *sql.DB) {
 	dbPass := ""
 	dbName := "basic"
 	host := os.Getenv("db_connection_env")
-	port := "3306"
+	port := "3306" 
 
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+host+":"+port+")/"+dbName)
 	if err != nil {

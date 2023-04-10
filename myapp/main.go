@@ -40,7 +40,7 @@ func dbConn() (db *sql.DB) {
 	host := os.Getenv("db_connection_env")
 	port := "3306" 
 
-	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+host+":"+port+")/"+dbName)
+	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@cloudsqlconn(localhost:"+port+")/"+dbName)
 	if err != nil {
 		panic(err.Error())
 	}

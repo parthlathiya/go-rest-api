@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -33,10 +34,10 @@ func healthCheck(w http.ResponseWriter, r *http.Request) {
 
 func dbConn() (db *sql.DB) {
 	dbDriver := "mysql"
-	dbUser := "test_user"
-	dbPass := "test_password"
-	dbName := "boilerplate"
-	host := "db"
+	dbUser := "root"
+	dbPass := ""
+	dbName := "basic"
+	host := os.Getenv("db_connection_env")
 	port := "3306"
 
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+host+":"+port+")/"+dbName)

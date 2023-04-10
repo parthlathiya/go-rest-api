@@ -37,7 +37,6 @@ func dbConn() (db *sql.DB) {
 	dbUser := "root"
 	dbPass := ""
 	dbName := "basic"
-	host := os.Getenv("db_connection_env")
 	port := "3306" 
 
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@cloudsqlconn(localhost:"+port+")/"+dbName)
